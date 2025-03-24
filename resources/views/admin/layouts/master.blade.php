@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+;<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -39,7 +39,8 @@
                 <div class="sidebar-body">
                     <ul class="sidebar-body-menu">
                         <li>
-                            <a class="active" href="{{ route('admin#dashboard') }}"><span class="icon home"
+                            <a class="@if (Request::route()->getName() == 'admin#dashboard') active @endif"
+                                href="{{ route('admin#dashboard') }}"><span class="icon home"
                                     aria-hidden="true"></span>Dashboard</a>
                         </li>
                         <li>
@@ -261,15 +262,17 @@
                                 <span class="sr-only">My profile</span>
                                 <span class="nav-user-img">
                                     <picture>
-                                        <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp">
-                                        <img src="./img/avatar/avatar-illustrated-02.png" alt="User name">
+                                        <source srcset="{{ asset('admin/img/avatar/avatar-illustrated-02.webp') }}"
+                                            type="image/webp">
+                                        <img src="{{ asset('admin/img/avatar/avatar-illustrated-02.png') }}"
+                                            alt="User name">
                                     </picture>
                                 </span>
                             </button>
                             <ul class="users-item-dropdown nav-user-dropdown dropdown">
                                 <form action="{{ route('logout') }}" method="post">
                                     @csrf
-                                    <li><a href="##">
+                                    <li><a href="{{ route('admin#profile') }}">
                                             <i data-feather="user" aria-hidden="true"></i>
                                             <span>Profile</span>
                                         </a></li>
