@@ -16,10 +16,15 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name'     => 'Super Admin',
-            'email'    => 'superadmin12345@gmail.com',
-            'role'     => 'superadmin',
-            'password' => Hash::make('superadmin@12345'),
+            'name'          => 'Super Admin',
+            'email'         => 'superadmin12345@gmail.com',
+            'role'          => 'superadmin',
+            'postal_code'   => '11041',
+            'city'          => 'Yangon',
+            'address'       => "No.8834 South Okkalapa",
+            'date_of_birth' => '12-10-1999',
+            'phone_number'  => '957743821',
+            'password'      => Hash::make('superadmin@12345'),
         ]);
     }
 }

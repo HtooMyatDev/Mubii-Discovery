@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class AdminController extends Controller
 {
     public function index()
@@ -8,7 +10,13 @@ class AdminController extends Controller
         return view("admin.home");
     }
 
-    public function profile(){
+    public function profile()
+    {
         return view("admin.profile.index");
+    }
+
+    public function editProfile(Request $request)
+    {
+        dd($request->all());
     }
 }

@@ -17,7 +17,12 @@ return new class extends Migration
             $table->string('nickname')->nullable();
             $table->string('role')->default("user");
             $table->string('profile')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
             $table->string('email')->unique();
+            $table->string('date_of_birth')->nullable();
+            $table->string('phone_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('provider')->default("simple");

@@ -12,6 +12,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/', [AdminController::class, 'profile'])->name('admin#profile');
 
         Route::get('edit', [AdminController::class, 'editProfilePage'])->name('admin#profile#edit-page');
+        Route::post('edit', [AdminController::class, 'editProfile'])->name('admin#profile#edit');
 
         Route::get('password', [AdminController::class, 'changePasswordPage'])->name('admin#profile#change-password-page');
     });
