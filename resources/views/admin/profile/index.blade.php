@@ -73,8 +73,9 @@
         <div class="card-header bg-white">
             <div class="d-flex justify-content-between align-items-center p-2">
                 <div class="text-primary fs-5  fw-bold ">Address</div>
-                <a href="" class="btn btn-outline-danger"> <span>Edit</span> <i class="fa-solid fa-pen"
-                        style="font-size: 15px"></i></a>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" href=""
+                    class="btn btn-outline-danger"> <span>Edit</span> <i class="fa-solid fa-pen"
+                        style="font-size: 15px"></i></button>
             </div>
         </div>
         <div class="card-body">
@@ -114,9 +115,10 @@
     </div>
     <a href="{{ route('admin#dashboard') }}" class="w-100 mt-2 btn btn-outline-primary">Back to dashboard</a>
 
-    {{-- Modal --}}
+    {{-- Personal Modal --}}
     <form action="{{ route('admin#profile#edit') }}" method="POST">
         @csrf
+        <input type="hidden" value="personal" name="status">
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -130,18 +132,27 @@
                                 <label for="" class="text-secondary">First Name</label>
                                 <input type="text" class="form-control" name="firstName"
                                     value="{{ old('firstName', $temp[0]) }}">
+                                @error('firstName')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="col">
                                 <label for="" class="text-secondary">Last Name</label>
                                 <input type="text" class="form-control" name="lastName"
                                     value="{{ old('lastName', $temp[1]) }}">
+                                @error('lastName')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row my-2">
                             <div class="col">
                                 <label for="" class="text-secondary">Email Address</label>
-                                <input type="text" class="form-control" name="email"
+                                <input type="email" class="form-control" name="email"
                                     value="{{ old('email', Auth::user()->email) }}">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row my-2">
@@ -149,6 +160,9 @@
                                 <label for="" class="text-secondary">Date of Birth</label>
                                 <input type="date" class="form-control" name="date_of_birth"
                                     value="{{ old('date_of_birth', Auth::user()->date_of_birth) }}">
+                                @error('date_of_birth')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row my-2">
@@ -156,6 +170,63 @@
                                 <label for="" class="text-secondary">Phone Number</label>
                                 <input type="text" name="phone_number" class="form-control"
                                     value="{{ old('phone_number', Auth::user()->phone_number) }}">
+                                @error('phone_number')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- Address Modal --}}
+    <form action="{{ route('admin#profile#edit') }}" method="POST">
+        @csrf
+
+        <input type="hidden" value="address" name="status">
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Edit Personal Information</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row my-2">
+                            <div class="col">
+                                <label for="" class="text-secondary">Address</label>
+                                <input type="text" class="form-control" name="address"
+                                    value="{{ old('address', Auth::user()->address) }}">
+                                @error('address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col">
+                                <label for="" class="text-secondary">City</label>
+                                <input type="text" class="form-control" name="city"
+                                    value="{{ old('city', Auth::user()->city) }}">
+                                @error('city')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col">
+                                <label for="" class="text-secondary">Postal Code</label>
+                                <input type="text" name="postal_code" class="form-control"
+                                    value="{{ old('postal_code', Auth::user()->postal_code) }}">
+                                @error('postal_code')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                     </div>
