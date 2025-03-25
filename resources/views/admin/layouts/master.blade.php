@@ -162,16 +162,19 @@
                 </div>
             </div>
             <div class="sidebar-footer">
-                <a href="##" class="sidebar-user">
+                <a href="{{ route('admin#profile') }}" class="sidebar-user">
                     <span class="sidebar-user-img">
                         <picture>
-                            <source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img
-                                src="./img/avatar/avatar-illustrated-01.png" alt="User name">
+                            <source
+                                srcset="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                                type="image/png"><img
+                                src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                                alt="User name">
                         </picture>
                     </span>
                     <div class="sidebar-user-info">
-                        <span class="sidebar-user__title">Nafisa Sh.</span>
-                        <span class="sidebar-user__subtitle">Support manager</span>
+                        <span class="sidebar-user__title">{{ Auth::user()->name }}</span>
+                        <span class="sidebar-user__subtitle">{{ Auth::user()->role }}</span>
                     </div>
                 </a>
             </div>
@@ -262,9 +265,10 @@
                                 <span class="sr-only">My profile</span>
                                 <span class="nav-user-img">
                                     <picture>
-                                        <source srcset="{{ asset('admin/img/avatar/avatar-illustrated-02.webp') }}"
+                                        <source
+                                            srcset="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-03.png' : 'admin/profile/' . Auth::user()->profile) }}"
                                             type="image/webp">
-                                        <img src="{{ asset('admin/img/avatar/avatar-illustrated-02.png') }}"
+                                        <img src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-03.png' : 'admin/profile/' . Auth::user()->profile) }}"
                                             alt="User name">
                                     </picture>
                                 </span>

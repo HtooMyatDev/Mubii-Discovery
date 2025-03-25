@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    @include('sweetalert::alert')
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,6 +16,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
         rel="stylesheet">
+
+
     @yield('title')
 
     <style>
@@ -34,18 +37,14 @@
                         Admin Profile Panel
                     </div>
                     <div class="card-body">
-                        <div
+                        <a href="{{ route('admin#profile') }}"
                             class="d-flex justify-content-start p-3 btn btn-outline-primary @if (Request::route()->getName() == 'admin#profile') active @endif w-100 my-2">
                             <i class="mx-3 fs-5 fa-solid fa-circle-user"></i> <span>Profile</span>
-                        </div>
-                        <div
-                            class="d-flex justify-content-start p-3 btn btn-outline-primary @if (Request::route()->getName() == 'admin#profile#edit-page') active @endif w-100 my-2">
-                            <i class="mx-3 fs-5 fa-solid fa-pen-to-square"></i> <span>Edit Profile</span>
-                        </div>
-                        <div
+                        </a>
+                        <a href="{{ route('admin#profile#change-password-page') }}"
                             class="d-flex justify-content-start p-3 btn btn-outline-primary @if (Request::route()->getName() == 'admin#profile#change-password-page') active @endif w-100 my-2">
                             <i class="mx-3 fs-5 fa-solid fa-lock"></i><span>Change Password</span>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -62,6 +61,26 @@
     <script src="{{ asset('admin/plugins/feather.min.js') }}"></script>
     <!-- Custom scripts -->
     <script src="{{ asset('admin/js/script.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    @yield('jQuery')
+
+    <script>
+        function loadFile(event) {
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                var output = document.querySelectorAll('.output')
+                for (let index = 0; index < output.length; index++) {
+                    output[index].src = reader.result
+                }
+            }
+            reader.readAsDataURL(event.target.files[0])
+        }
+    </script>
 </body>
 
 </html>

@@ -2,7 +2,8 @@
 
 @section('title')
     <title>
-        Admin Profile Details</title>
+        Admin Profile Details
+    </title>
 @endsection
 
 @section('content')
@@ -11,8 +12,8 @@
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-2">
-                    <img src="{{ asset('admin/img/avatar/avatar-illustrated-03.png') }}"
-                        class="border border-5 border-primary border-opacity-10 rounded-circle img-fluid"
+                    <img src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                        class="border border-5 border-primary border-opacity-10 rounded-circle img-fluid output"
                         style="width: 150px">
                 </div>
                 <div class="col">
@@ -38,6 +39,7 @@
             $temp = explode(' ', Auth::user()->name, 2);
         @endphp
         <div class="card-body">
+            <div class="row"></div>
             <div class="row my-3">
                 <div class="col-4 d-flex flex-column">
                     <span class="text-secondary">First Name</span>
@@ -76,6 +78,7 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2" href=""
                     class="btn btn-outline-danger"> <span>Edit</span> <i class="fa-solid fa-pen"
                         style="font-size: 15px"></i></button>
+
             </div>
         </div>
         <div class="card-body">
@@ -116,7 +119,7 @@
     <a href="{{ route('admin#dashboard') }}" class="w-100 mt-2 btn btn-outline-primary">Back to dashboard</a>
 
     {{-- Personal Modal --}}
-    <form action="{{ route('admin#profile#edit') }}" method="POST">
+    <form action="{{ route('admin#profile#edit') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" value="personal" name="status">
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -127,6 +130,25 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+
+                        <div class="row my-2">
+                            <div class="col w-100">
+                                <label for="" class="text-secondary">Profile Picture</label>
+                                <div class="row d-flext align-items-center">
+                                    <div class="col-2">
+                                        <img src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                                            class="w-100 img-thumbnail output">
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="file" name="profile" class="btn btn-primary form-control"
+                                            onchange="loadFile(event)">
+                                        @error('profile')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row my-2">
                             <div class="col">
                                 <label for="" class="text-secondary">First Name</label>
@@ -195,7 +217,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Edit Personal Information</h1>
+                        <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">Edit Address Information</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
