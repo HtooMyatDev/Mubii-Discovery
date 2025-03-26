@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
@@ -16,5 +17,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('password', [AdminController::class, 'changePasswordPage'])->name('admin#profile#change-password-page');
         Route::post('password', [AdminController::class, 'changePassword'])->name('admin#profile#change-password');
+    });
+
+    Route::group(['prefix' => 'movie'], function () {
+        Route::get('list', [MovieController::class, 'index'])->name('movie#list');
+        Route::post('get', [MovieController::class, 'get'])->name('movie#get');
     });
 });

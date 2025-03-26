@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Trailer extends Model
 {
     protected $fillable = [
-        'url',
-        'movie_id',
+        'embed_link',
     ];
 }

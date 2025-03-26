@@ -38,7 +38,7 @@ class AdminController extends Controller
 
         Alert::error('Password Change', 'Password has not been changed, check your old password!');
 
-        return back();
+        return back()->with('error', 'Please type the correct old password.');
     }
     public function editProfile(Request $request)
     {

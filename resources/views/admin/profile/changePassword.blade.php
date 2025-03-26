@@ -17,10 +17,13 @@
                 <div class="row align-items-center my-3">
                     <div class="col d-flex flex-column">
                         <span class="text-secondary">Old Password</span>
-                        <input type="text" class="form-control" name="oldPassword">
+                        <input type="password" class="form-control" name="oldPassword">
                         @error('oldPassword')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
+                        @if (session('error'))
+                            <small class="text-danger">{{ session('error') }}</small>
+                        @endif
                     </div>
                 </div>
 

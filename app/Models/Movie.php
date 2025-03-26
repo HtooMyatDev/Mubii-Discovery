@@ -15,6 +15,6 @@ class Movie extends Model
         'trailer_id',
         'languages',
         'country_of_origin',
-        'release_date',
+        'released_date',
     ];
 }

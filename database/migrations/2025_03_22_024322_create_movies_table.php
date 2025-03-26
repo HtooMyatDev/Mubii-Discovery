@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('trailer_id');
             $table->string('languages');
             $table->string('country_of_origin');
-            $table->string('release_date');
+            $table->string('released_date');
             $table->timestamps();
         });
     }

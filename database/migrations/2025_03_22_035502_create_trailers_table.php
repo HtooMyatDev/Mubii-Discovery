@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('trailers', function (Blueprint $table) {
             $table->id();
-            $table->integer('movie_id');
-            $table->string('url');
+            $table->string('embed_link');
             $table->timestamps();
         });
     }
