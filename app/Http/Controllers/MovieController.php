@@ -16,11 +16,44 @@ class MovieController extends Controller
         $movies = Movie::get();
         return view('admin.movie.index', compact('movies'));
     }
-    public function get(Request $request)
+    public function addMovie(Request $request)
     {
         $this->checkValidation($request);
         $movie = $this->getMovieData($request);
+        $data  = $this->getallData($movie, $request);
+        if (!empty($movie->totalSeasons)) {
+            $data['total_seasons'] = $movie->totalSeasons;
+        } else {
+            $data['total_seasons'] = 0;
+        }
 
+        Movie::updateOrCreate([
+            'title' => $movie->Title,
+        ], $data);
+
+        return back();
+    }
+
+    private function checkValidation($request)
+    {
+        $validationRules = [
+            'movieName'   => 'required',
+            'trailerLink' => "required",
+        ];
+
+        $request->validate($validationRules);
+    }
+
+    private function getMovieData($request)
+    {
+        $name     = str_replace(" ", "+", $request->movieName);
+        $apikey   = '881fe2b3';
+        $response = Http::get('https://www.omdbapi.com/?apikey=' . $apikey . '&t=' . $name . '&plot=full');
+        return $response->object();
+    }
+
+    private function getAllData($movie, $request)
+    {
         if ($movie->Response == 'False') {
             return back()->with('Movie Status', "Please check the movie name again!");
         }
@@ -43,36 +76,19 @@ class MovieController extends Controller
             'embed_link' => $request->trailerLink,
         ]);
 
-        Movie::create([
-            'title'             => $movie->Title,
+        return [
+            'plot'              => $movie->Plot,
             'poster'            => $movie->Poster,
+            'runtime'           => $movie->Runtime,
             'director_id'       => $director->id,
+            'writer'            => $movie->Writer,
             'cast_id'           => $cast->id,
             'genre_id'          => $genre->id,
             'trailer_id'        => $trailer->id,
+            'type'              => $movie->Type,
             'languages'         => $movie->Language,
             'country_of_origin' => $movie->Country,
             'released_date'     => $movie->Released,
-        ]);
-
-        return back();
-    }
-
-    private function checkValidation($request)
-    {
-        $validationRules = [
-            'movieName'   => "required",
-            'trailerLink' => "required",
         ];
-
-        $request->validate($validationRules);
-    }
-
-    private function getMovieData($request)
-    {
-        $name     = str_replace(" ", "+", $request->movieName);
-        $apikey   = '881fe2b3';
-        $response = Http::get('https://www.omdbapi.com/?apikey=' . $apikey . '&t=' . $name);
-        return $response->object();
     }
 }

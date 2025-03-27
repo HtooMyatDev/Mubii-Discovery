@@ -10,6 +10,11 @@
     <link rel="shortcut icon" href="{{ asset('admin/img/svg/logo.svg') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('admin/css/style.min.css') }}">
     @yield('title')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="{{ asset('admin/css/customize.css') }}">
 </head>
 
 <body>
@@ -40,12 +45,12 @@
                     <ul class="sidebar-body-menu">
                         <li>
                             <a class="@if (Request::route()->getName() == 'admin#dashboard') active @endif"
-                                href="{{ route('admin#dashboard') }}"><span class="icon home"
-                                    aria-hidden="true"></span>Dashboard</a>
+                                href="{{ route('admin#dashboard') }}"><span class="icon" aria-hidden="true"><i
+                                        class="fa-solid fa-house"></i></span>Dashboard</a>
                         </li>
                         <li>
                             <a class="show-cat-btn" href="">
-                                <span class="icon document" aria-hidden="true"></span>Movies
+                                <span class="icon" aria-hidden="true"><i class="fa-solid fa-film"></i></span>Movies
                                 <span class="category__btn transparent-btn" title="Open list">
                                     <span class="sr-only">Open list</span>
                                     <span class="icon arrow-down" aria-hidden="true"></span>
@@ -53,10 +58,9 @@
                             </a>
                             <ul class="cat-sub-menu">
                                 <li>
-                                    <a href="{{ route('movie#list') }}">Add Movie</a>
-                                </li>
-                                <li>
-                                    <a href="new-post.html">Add new post</a>
+                                    <a class="@if (Request::route()->getName() == 'movie#list') active @endif"
+                                        href="{{ route('movie#list') }}"> <span class="icon"><i
+                                                class="fa-solid fa-plus"></i></span> Add Movie</a>
                                 </li>
                             </ul>
                         </li>
@@ -119,7 +123,8 @@
                     <span class="system-menu__title">system</span>
                     <ul class="sidebar-body-menu">
                         <li>
-                            <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
+                            <a href="appearance.html"><span class="icon edit"
+                                    aria-hidden="true"></span>Appearance</a>
                         </li>
                         <li>
                             <a class="show-cat-btn" href="##">
@@ -266,9 +271,9 @@
                                 <span class="nav-user-img">
                                     <picture>
                                         <source
-                                            srcset="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-03.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                                            srcset="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
                                             type="image/webp">
-                                        <img src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-03.png' : 'admin/profile/' . Auth::user()->profile) }}"
+                                        <img src="{{ asset(Auth::user()->profile == null ? 'admin/img/avatar/avatar-illustrated-02.png' : 'admin/profile/' . Auth::user()->profile) }}"
                                             alt="User name">
                                     </picture>
                                 </span>

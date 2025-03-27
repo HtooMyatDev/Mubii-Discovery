@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('movie#get') }}" method="POST">
+    <form action="{{ route('movie#add') }}" method="POST">
         @csrf
         <div class="row my-3">
             <div class="col">
@@ -36,14 +36,25 @@
             </div>
         </div>
     </form>
-    <div class="row">
+    <div class="d-flex gap-3">
         @if (count($movies) > 0)
             @foreach ($movies as $movie)
-                <div class="col-2">
-                    <img style="width: 250px; height: 100%; object-fit: cover;" class="shadow-sm img-thumbnail"
-                        src="{{ $movie->poster }}" alt="">
+                <div class="">
+                    <div class="card shadow-lg">
+                        <div class="card-inner">
+                            <div class="card-front"> <img style="object-fit: cover;"
+                                    class="img-thumbnail" src="{{ $movie->poster }}" alt=""></div>
+                            <div class="card-back">Back Side</div>
+                        </div>
+                    </div>
+
                 </div>
             @endforeach
+        @else
+            <div class="text-white fw-bold p-3 text-center h5 bg-danger">There is no movie in database!</div>
         @endif
     </div>
+
+
+
 @endsection

@@ -21,6 +21,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
     Route::group(['prefix' => 'movie'], function () {
         Route::get('list', [MovieController::class, 'index'])->name('movie#list');
-        Route::post('get', [MovieController::class, 'get'])->name('movie#get');
+        Route::post('add', [MovieController::class, 'addMovie'])->name('movie#add');
     });
 });
