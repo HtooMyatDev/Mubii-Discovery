@@ -39,7 +39,7 @@ class MovieController extends Controller
 
     public function editPage($id)
     {
-        $data = Movie::select('trailers.embed_link', 'movies.title', 'movies.id as movie_id','trailers.id as trailer_id')
+        $data = Movie::select('trailers.embed_link', 'movies.title', 'movies.id as movie_id', 'trailers.id as trailer_id')
             ->where('movies.id', $id)
             ->leftJoin('trailers', 'trailers.id', '=', 'movies.trailer_id')
             ->first();
@@ -61,7 +61,20 @@ class MovieController extends Controller
 
         return to_route('movie#list');
     }
+    public function delete($id)
+    {
+        $movie = Movie::select('director_id', 'cast_id', 'genre_id', 'trailer_id')
+            ->where('id', $id)
+            ->first();
 
+        Director::where('id', $movie->director_id)->delete();
+        Cast::where('id', $movie->cast_id)->delete();
+        Genre::where('id', $movie->genre_id)->delete();
+        Trailer::where('id', $movie->trailer_id)->delete();
+        Movie::where('id', $id)->delete();
+
+        return to_route('movie#list');
+    }
     private function checkValidation($request)
     {
         $validationRules = [

@@ -24,5 +24,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::post('add', [MovieController::class, 'addMovie'])->name('movie#add');
         Route::get("edit/{id}", [MovieController::class, "editPage"])->name("movie#editPage");
         Route::post('edit', [MovieController::class, 'edit'])->name('movie#edit');
+        Route::get("delete/{id}", [MovieController::class, "delete"])->name("movie#delete");
     });
 });
