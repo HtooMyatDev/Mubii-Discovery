@@ -30,8 +30,8 @@
                         <span class="sr-only">Home</span>
                         <span class="icon logo" aria-hidden="true"></span>
                         <div class="logo-text">
-                            <span class="logo-title">Elegant</span>
-                            <span class="logo-subtitle">Dashboard</span>
+                            <span class="logo-title">Mubii</span>
+                            <span class="logo-subtitle">Discovery</span>
                         </div>
 
                     </a>
@@ -64,18 +64,9 @@
                             </ul>
                         </li>
                         <li>
-                            <a class="show-cat-btn" href="##">
-                                <span class="icon folder" aria-hidden="true"></span>Categories
-                                <span class="category__btn transparent-btn" title="Open list">
-                                    <span class="sr-only">Open list</span>
-                                    <span class="icon arrow-down" aria-hidden="true"></span>
-                                </span>
-                            </a>
-                            <ul class="cat-sub-menu">
-                                <li>
-                                    <a href="categories.html">All categories</a>
-                                </li>
-                            </ul>
+                            <a class="@if (Request::route()->getName() == 'payment#list') active @endif"
+                                href="{{ route('payment#list') }}"><span class="icon" aria-hidden="true"><i
+                                        class="fa-solid fa-credit-card"></i></span>Payment Methods</a>
                         </li>
                         <li>
                             <a class="show-cat-btn" href="##">
@@ -122,8 +113,7 @@
                     <span class="system-menu__title">system</span>
                     <ul class="sidebar-body-menu">
                         <li>
-                            <a href="appearance.html"><span class="icon edit"
-                                    aria-hidden="true"></span>Appearance</a>
+                            <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
                         </li>
                         <li>
                             <a class="show-cat-btn" href="##">
@@ -308,7 +298,7 @@
             <footer class="footer">
                 <div class="container footer--flex">
                     <div class="footer-start">
-                        <p>2021 © Elegant Dashboard - <a href="elegant-dashboard.com" target="_blank"
+                        <p>Mubii Discovery<a href="elegant-dashboard.com" target="_blank"
                                 rel="noopener noreferrer">elegant-dashboard.com</a></p>
                     </div>
                     <ul class="footer-end">
