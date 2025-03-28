@@ -13,7 +13,10 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::get();
+        $movies = Movie::select("movies.id", "movies.poster", "directors.name as director_name", "movies.type", 'movies.writer')
+            ->leftJoin("directors", "directors.id", "=", "movies.director_id")
+            ->get();
+
         return view('admin.movie.index', compact('movies'));
     }
     public function addMovie(Request $request)
@@ -21,7 +24,7 @@ class MovieController extends Controller
         $this->checkValidation($request);
         $movie = $this->getMovieData($request);
         $data  = $this->getallData($movie, $request);
-        if (!empty($movie->totalSeasons)) {
+        if (! empty($movie->totalSeasons)) {
             $data['total_seasons'] = $movie->totalSeasons;
         } else {
             $data['total_seasons'] = 0;
@@ -34,11 +37,36 @@ class MovieController extends Controller
         return back();
     }
 
+    public function editPage($id)
+    {
+        $data = Movie::select('trailers.embed_link', 'movies.title', 'movies.id as movie_id','trailers.id as trailer_id')
+            ->where('movies.id', $id)
+            ->leftJoin('trailers', 'trailers.id', '=', 'movies.trailer_id')
+            ->first();
+
+        return view('admin.movie.edit', compact('data'));
+    }
+
+    public function edit(Request $request)
+    {
+        $this->checkValidation($request);
+
+        Movie::where('id', "=", $request->movie_id)->update([
+            'title' => $request->title,
+        ]);
+
+        Trailer::where('id', $request->trailer_id)->update([
+            'embed_link' => $request->embed_link,
+        ]);
+
+        return to_route('movie#list');
+    }
+
     private function checkValidation($request)
     {
         $validationRules = [
-            'movieName'   => 'required',
-            'trailerLink' => "required",
+            'title'      => 'required',
+            'embed_link' => "required",
         ];
 
         $request->validate($validationRules);
@@ -46,7 +74,7 @@ class MovieController extends Controller
 
     private function getMovieData($request)
     {
-        $name     = str_replace(" ", "+", $request->movieName);
+        $name     = str_replace(" ", "+", $request->title);
         $apikey   = '881fe2b3';
         $response = Http::get('https://www.omdbapi.com/?apikey=' . $apikey . '&t=' . $name . '&plot=full');
         return $response->object();
@@ -73,7 +101,7 @@ class MovieController extends Controller
         ]);
 
         $trailer = Trailer::create([
-            'embed_link' => $request->trailerLink,
+            'embed_link' => $request->embed_link,
         ]);
 
         return [
