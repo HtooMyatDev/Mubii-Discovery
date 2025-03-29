@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+    <h2 class="main-title">Add Payment Method & List</h2>
     <div class="row">
         <div class="col-4">
             <form action="{{ route('payment#create') }}" method="POST">
@@ -88,11 +89,13 @@
                                     <td>{{ $payment->created_at }}</td>
                                     <td>{{ $payment->updated_at }}</td>
                                     <td class="d-flex justify-content-center align-items-center gap-2">
-                                        <a href="" class="btn btn-sm btn-outline-primary">
+                                        <a href="/admin/payment/edit/{{ $payment->id }}"
+                                            class="btn btn-sm btn-outline-primary">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
 
-                                        <a href="" class="btn btn-sm btn-outline-danger">
+                                        <a href="/admin/payment/delete/{{ $payment->id }}"
+                                            class="btn btn-sm btn-outline-danger">
                                             <i class="fa-solid fa-trash "></i>
                                         </a>
                                     </td>

@@ -31,8 +31,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get("delete/{id}", [MovieController::class, "delete"])->name("movie#delete");
     });
 
-    Route::group(['prefix'=>'payment','middleware','superadmin'], function(){
+    Route::group(['prefix' => 'payment', 'middleware', 'superadmin'], function () {
         Route::get('create', [PaymentController::class, 'index'])->name('payment#list');
-        Route::post('create',[PaymentController::class, 'create'])->name('payment#create');
+        Route::post('create', [PaymentController::class, 'create'])->name('payment#create');
+        Route::get('edit/{id}', [PaymentController::class, 'edit'])->name('payment#edit');
+        Route::post('update',[PaymentController::class,'update'])->name('payment#update');
+        Route::get('delete/{id}', [PaymentController::class, 'delete'])->name('payment#delete');
     });
 });
