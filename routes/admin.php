@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MovieController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReviewController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     // to admin dashboard
@@ -37,12 +37,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::post('create', [PaymentController::class, 'create'])->name('payment#create');
 
         Route::get('edit/{id}', [PaymentController::class, 'edit'])->name('payment#edit');
-        Route::post('update',[PaymentController::class,'update'])->name('payment#update');
+        Route::post('update', [PaymentController::class, 'update'])->name('payment#update');
 
         Route::get('delete/{id}', [PaymentController::class, 'delete'])->name('payment#delete');
     });
 
-    Route::group(['prefix' => "review"], function(){
-        Route::get('list', [ReviewController::class,'index'])->name('review#list');
+    Route::group(['prefix' => "review"], function () {
+        Route::get('list', [ReviewController::class, 'index'])->name('review#list');
     });
 });
