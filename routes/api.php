@@ -8,4 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('login', [AuthController::class, 'login'])->name('api#login');
+Route::group(['prefix'=>'auth'], function(){
+    Route::post('login', [AuthController::class, 'login'])->name('api#login');
+    Route::post('register',[AuthController::class,'register'])->name('api#register');
+});

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,7 +29,21 @@ class AuthController extends Controller
                 'error'  => 'Invalid credentials',
             ], 401);
         }
-
-        // Validate the request
     }
+
+    public function register(Request $request)
+    {
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        logger($user);
+
+        return response()->json([
+            'user'  => $user,
+            'token' => $user->createToken(time())->plainTextToken,
+        ], 200);
+    }
+
 }
