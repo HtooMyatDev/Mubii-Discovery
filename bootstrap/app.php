@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\SuperAdminMiddleware;
-use App\Http\Middleware\UserMiddleware;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\UserMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use Illuminate\Http\Middleware\HandleCors;
+use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'user'       => UserMiddleware::class,
             'admin'      => AdminMiddleware::class,
             'superadmin' => SuperAdminMiddleware::class,
+            'cors'       => HandleCors::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

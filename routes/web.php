@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialController;
+use Illuminate\Support\Facades\Route;
 
-require_once __DIR__.'/admin.php';
-require_once __DIR__.'/user.php';
-require_once __DIR__.'/auth.php';
+require_once __DIR__ . '/admin.php';
+require_once __DIR__ . '/user.php';
+require_once __DIR__ . '/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,5 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/auth/{provider}/redirect', [SocialController::class, 'redirect']);
-Route::get('/auth/{provider}/callback', [SocialController::class, 'callback']);
+Route::middleware('cors')->group(function () {
+    Route::get('/auth/{provider}/redirect', [SocialController::class, 'redirect']);
+    Route::get('/auth/{provider}/callback', [SocialController::class, 'callback']);
+});
