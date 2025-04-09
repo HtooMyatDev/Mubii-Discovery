@@ -28,7 +28,7 @@ class SocialController extends Controller
                     'provider_token' => $user->token,
                 ]);
             } else {
-                $error = 'This email is already associated with another social login';
+                $error = 'This email is already associated with another social login.';
 
                 return Redirect::to('http://localhost:5173/social-login-failure?error=' . $error);
             }
@@ -45,6 +45,6 @@ class SocialController extends Controller
         }
         Auth::login($authUser);
         $token = $authUser->createToken('authToken')->plainTextToken;
-        return Redirect::to('http://localhost:5173/social-login-success?token=' . $token);
+        return Redirect::to('http://localhost:5173/social-login-success?token=' . $token . '&data=' . $authUser);
     }
 }
