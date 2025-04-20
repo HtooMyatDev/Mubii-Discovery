@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -13,10 +14,13 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        if ($this->checkValidation($request)) {
+        $validators = $this->checkValidation($request);
+        if ($validators->fails()) {
+            logger('tf?');
             return response()->json([
-                'status' => 'Duplicate Email',
-            ]);
+                'status' => false,
+                'errors' => $validators->errors(),
+            ],422);
         } else {
             $data       = $this->requestUserData($request);
             $oldProfile = User::select('profile')->where('id', $request->id)->first();
@@ -38,11 +42,10 @@ class UserController extends Controller
             $updatedData = User::find($request->id);
 
             return response()->json([
-                'status'      => 'Success',
+                'status'      => true,
                 'updatedData' => $updatedData,
-            ]);
-        }
-    }
+            ],200);
+        }}
 
     private function requestUserData($request)
     {
@@ -57,13 +60,11 @@ class UserController extends Controller
 
     private function checkValidation($request)
     {
-        $emails = User::select('email')->where('id', '!=', $request->id)->get();
+        $validationRules = [
+            'name'    => 'required',
+            'email'   => 'required|unique:users,email,' . $request->id,
+        ];
 
-        for ($i = 0; $i < count($emails); $i++) {
-            if ($request->email == $emails[$i]->email) {
-                return true;
-            }
-        }
-        return false;
+        return Validator::make($request->all(), $validationRules);
     }
 }
