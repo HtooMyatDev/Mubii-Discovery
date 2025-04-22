@@ -17,4 +17,6 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'profile'], function () {
     Route::post('update', [UserController::class, 'update'])->name('api#profile#update');
+
+    Route::post('change/password',[UserController::class, 'changePassword'])->name('api#profile#password');
 });

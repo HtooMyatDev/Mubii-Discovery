@@ -2,8 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -19,35 +17,25 @@ class SocialController extends Controller
     {
         $user     = Socialite::driver($provider)->user();
         $authUser = User::where('email', $user->email)->first();
-        if ($authUser) {
+        if ($authUser && $authUser->provider != $provider) {
             // User with this email already exists
             // Link the social account if it's not already links
-            if (! $authUser->provider || $authUser->provider === $provider) {
-                $authUser->update([
-                    'provider'       => $provider,
-                    'provider_id'    => $user->id,
-                    'provider_token' => $user->token,
-                ]);
-            } else {
-                $error = 'This email is already associated with another social login.';
-
-                return Redirect::to('http://localhost:5173/social-login-failure?error=' . $error);
-            }
+            $error = 'This email is already associated with another social login.';
+            return Redirect::to('http://localhost:5173/social-login-failure?error=' . $error);
 
         } else {
-            $authUser = User::create([
+            $authUser = User::updateOrCreate([
+                'provider_id' => $user->id,
+            ], [
                 'name'           => $user->name,
                 'nickname'       => $user->nickname,
                 'email'          => $user->email,
                 'provider'       => $provider,
-                'provider_id'    => $user->id,
                 'provider_token' => $user->token,
             ]);
-            Log::info('User object before Auth::login()', (array) $authUser);
-            Auth::login($authUser);
-            Log::info('User logged in:', context: (array) Auth::user());
+            $data  = User::where('id', $authUser->id)->first();
             $token = $authUser->createToken('authToken')->plainTextToken;
-            return Redirect::to('http://localhost:5173/social-login-success?token=' . $token . '&data=' . $authUser);
+            return Redirect::to('http://localhost:5173/social-login-success?token=' . $token . '&data=' . $data);
         }
     }
 }

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +16,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $validators = $this->checkValidation($request);
+        $validators = $this->checkValidation($request, 'profile');
         if ($validators->fails()) {
             return response()->json([
                 'status' => false,
@@ -35,7 +36,6 @@ class UserController extends Controller
                 $path            = $request->file('profile')->store('profile_images', 'public');
                 $imageURL        = Storage::url($path);
                 $data['profile'] = $imageURL;
-
             } else {
                 $data['profile'] = $oldProfile->profile;
             }
@@ -47,7 +47,43 @@ class UserController extends Controller
                 'status'      => true,
                 'updatedData' => $updatedData,
             ], 200);
+        }
+    }
 
+    public function changePassword(Request $request)
+    {
+        $currentPassword = User::select('password')->where('id', $request->userId)->first();
+
+        $validators = $this->checkValidation($request, 'password');
+        // check if validation fails
+        if ($validators->fails()) {
+            return response()->json([
+                'status' => false,
+                'error'  => $validators->errors(),
+            ], 422);
+        }
+        // if validation doesn't fail
+        else {
+            if ($currentPassword->password != '') {
+                if (Hash::check($request->oldPassword, $currentPassword->password)) {
+                    User::where('id', $request->userId)->update([
+                        'password' => Hash::make($request->newPassword),
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'error'  => 'The old password does not match!',
+                    ],422);
+                }
+            } else {
+                User::where('id', $request->userId)->update([
+                    'password' => Hash::make($request->newPassword),
+                ]);
+            }
+            return response()->json([
+                'status' => true,
+                'data'   => 'data',
+            ], 200);
         }
     }
     private function requestUserData($request)
@@ -61,12 +97,23 @@ class UserController extends Controller
         ];
     }
 
-    private function checkValidation($request)
+    private function checkValidation($request, $action)
     {
-        $validationRules = [
-            'name'  => 'required',
-            'email' => 'required|unique:users,email,' . $request->id,
-        ];
+        if ($action == 'profile') {
+            $validationRules = [
+                'name'  => 'required',
+                'email' => 'required|unique:users,email,' . $request->id,
+            ];
+        } elseif ($action == 'password') {
+            $currentPassword = User::select('password')->where('id', $request->userId)->first();
+            $validationRules = [
+                'newPassword'     => "required|same:confirmPassword",
+                'confirmPassword' => "required|same:newPassword",
+            ];
+            if ($currentPassword->password != "") {
+                $validationRules['oldPassword'] = 'required';
+            }
+        }
 
         return Validator::make($request->all(), $validationRules);
     }
