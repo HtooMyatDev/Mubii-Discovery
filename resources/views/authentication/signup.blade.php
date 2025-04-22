@@ -4,10 +4,10 @@ Mubii Discover | Sign Up
 @endsection
 @section('content')
     <div class="layer"></div>
-    <main class="page-center">
-        <article class="sign-up">
+    <main class="page-center text-center">
+        <article class="sign-up pt-5 shadow-sm w-25">
             <h1 class="sign-up__title">Get started</h1>
-            <p class="sign-up__subtitle">
+            <p class="fs-6 text-secondary">
                 Start creating the best possible user experience for you customers
             </p>
             <form class="sign-up-form form" action="{{ route('register') }}" method="POST">

@@ -9,12 +9,8 @@ require_once __DIR__ . '/user.php';
 require_once __DIR__ . '/auth.php';
 
 Route::get('/', function () {
-    return view('welcome');
+    return to_route('login');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

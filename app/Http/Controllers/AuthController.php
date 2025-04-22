@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -21,7 +22,7 @@ class AuthController extends Controller
             return response()->json([
                 'user'   => $user,
                 'status' => 'success',
-                'token'  => $user->createToken(time())->plainTextToken,
+                'token'  => $user->createToken('auth-token')->plainTextToken,
             ], 200);
         } else {
             return response()->json([
@@ -38,11 +39,10 @@ class AuthController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        logger($user);
-
+        Auth::login($user);
         return response()->json([
             'user'  => $user,
-            'token' => $user->createToken(time())->plainTextToken,
+            'token' => $user->createToken('auth-token')->plainTextToken,
         ], 200);
     }
 

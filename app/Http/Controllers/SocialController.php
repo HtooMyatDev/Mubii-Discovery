@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -42,9 +43,11 @@ class SocialController extends Controller
                 'provider_id'    => $user->id,
                 'provider_token' => $user->token,
             ]);
+            Log::info('User object before Auth::login()', (array) $authUser);
+            Auth::login($authUser);
+            Log::info('User logged in:', context: (array) Auth::user());
+            $token = $authUser->createToken('authToken')->plainTextToken;
+            return Redirect::to('http://localhost:5173/social-login-success?token=' . $token . '&data=' . $authUser);
         }
-        Auth::login($authUser);
-        $token = $authUser->createToken('authToken')->plainTextToken;
-        return Redirect::to('http://localhost:5173/social-login-success?token=' . $token . '&data=' . $authUser);
     }
 }
