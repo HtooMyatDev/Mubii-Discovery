@@ -72,8 +72,10 @@ class UserController extends Controller
                 } else {
                     return response()->json([
                         'status' => false,
-                        'error'  => 'The old password does not match!',
-                    ],422);
+                        'error'  => ['oldPassword' => [
+                            'The old password does not match',
+                        ]],
+                    ], 422);
                 }
             } else {
                 User::where('id', $request->userId)->update([
