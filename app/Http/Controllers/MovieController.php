@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Cast;
@@ -74,6 +75,34 @@ class MovieController extends Controller
         Movie::where('id', $id)->delete();
 
         return to_route('movie#list');
+    }
+
+    // API
+
+    // send movie list to client side
+    public function list()
+    {
+        $movies = Movie::get();
+        return response()->json([
+            'status' => true,
+            'movieData' => $movies
+        ]);
+    }
+
+
+    // send movie details to client side
+
+    public function details($movieId)
+    {
+        $movie = Movie::where('id', $movieId)->first();
+        $trailer = Trailer::where('id', $movie->trailer_id)->first();
+        $genres = Genre::where('id', $movie->genre_id)->first();
+        return response()->json([
+            'status' => true,
+            'movieData' => $movie,
+            'trailerLink' => $trailer->embed_link,
+            'genres' => explode(',', $genres->genre)
+        ]);
     }
     private function checkValidation($request)
     {

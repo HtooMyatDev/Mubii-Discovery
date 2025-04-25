@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,9 +14,13 @@ class AuthController extends Controller
     {
 
         $user = User::where(
-            'email', $request->email)
+            'email',
+            $request->email
+        )
             ->where('role', 'user')
             ->first();
+
+        $movie = Movie::get();
 
         // Check if the account is in the database and the password is correct
         if ($user && password_verify($request->password, $user->password)) {
@@ -23,6 +29,7 @@ class AuthController extends Controller
                 'user'   => $user,
                 'status' => 'success',
                 'token'  => $user->createToken('auth-token')->plainTextToken,
+                'movie' => $movie
             ], 200);
         } else {
             return response()->json([
@@ -39,11 +46,16 @@ class AuthController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $movie = Movie::get();
+
         Auth::login($user);
+
         return response()->json([
             'user'  => $user,
+            'status' => 'success',
             'token' => $user->createToken('auth-token')->plainTextToken,
+            'movie' => $movie
         ], 200);
     }
-
 }
