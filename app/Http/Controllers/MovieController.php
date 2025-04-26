@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cast;
-use App\Models\Director;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\Trailer;
+use App\Models\Director;
+use App\Models\WatchList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -92,16 +93,20 @@ class MovieController extends Controller
 
     // send movie details to client side
 
-    public function details($movieId)
+    public function details($movieId, $userId)
     {
         $movie = Movie::where('id', $movieId)->first();
         $trailer = Trailer::where('id', $movie->trailer_id)->first();
         $genres = Genre::where('id', $movie->genre_id)->first();
+
+        $isAdded = WatchList::where('user_id', $userId)->where('movie_id', $movieId)->first();
+
         return response()->json([
             'status' => true,
             'movieData' => $movie,
             'trailerLink' => $trailer->embed_link,
-            'genres' => explode(',', $genres->genre)
+            'genres' => explode(',', $genres->genre),
+            'isAdded' => $isAdded
         ]);
     }
     private function checkValidation($request)

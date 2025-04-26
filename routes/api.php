@@ -25,7 +25,7 @@ Route::group(['prefix' => 'profile'], function () {
 
 Route::group(['prefix' => 'movie'], function () {
     Route::get('list', [MovieController::class, 'list'])->name('api#movie#list');
-    Route::get('{movieId}/details', [MovieController::class, 'details'])->name('api#movie#details');
+    Route::get('{movieId}/details/{userId}', [MovieController::class, 'details'])->name('api#movie#details');
 
     Route::post('watchlist/toggle', [WatchListController::class, 'toggle'])->name('api#watchList#toggle');
 });

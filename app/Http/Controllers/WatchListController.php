@@ -10,27 +10,30 @@ class WatchListController extends Controller
     public function toggle(Request $request)
     {
         if ($request->add) {
-            $data = $this->add($request);
-            return response()->json([
-                'status' => true,
-                'data' => $data
-            ]);
+            $this->add($request);
+        } else {
+            $this->remove($request);
         }
-        //  else {
-        //     $this->remove($request);
-        // }
+
+        $data = WatchList::get();
+        return response()->json([
+            'status' => true,
+            'list' => $data
+        ]);
     }
 
     public function add($request)
     {
-        $data = WatchList::create([
+        WatchList::create([
             'user_id' => $request->userId,
             'movie_id' => $request->movieId,
         ]);
-        logger($data);
-
-        return $data;
     }
 
-    public function remove($request) {}
+    public function remove($request)
+    {
+        WatchList::where('user_id', $request->userId)
+            ->where('movie_id', $request->movieId)
+            ->delete();
+    }
 }
