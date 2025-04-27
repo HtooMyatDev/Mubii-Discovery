@@ -22,6 +22,15 @@ class WatchListController extends Controller
         ]);
     }
 
+    public function isAdded($userId)
+    {
+        $isAdded = WatchList::where('user_id', $userId)->where('movie_id', $movieId)->first();
+        return response()->json([
+            'status' => true,
+            'isAdded' => $isAdded
+        ]);
+    }
+
     public function add($request)
     {
         WatchList::create([

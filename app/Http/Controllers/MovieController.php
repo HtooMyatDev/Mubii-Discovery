@@ -93,20 +93,17 @@ class MovieController extends Controller
 
     // send movie details to client side
 
-    public function details($movieId, $userId)
+    public function details($movieId)
     {
         $movie = Movie::where('id', $movieId)->first();
         $trailer = Trailer::where('id', $movie->trailer_id)->first();
         $genres = Genre::where('id', $movie->genre_id)->first();
 
-        $isAdded = WatchList::where('user_id', $userId)->where('movie_id', $movieId)->first();
-
         return response()->json([
             'status' => true,
             'movieData' => $movie,
             'trailerLink' => $trailer->embed_link,
-            'genres' => explode(',', $genres->genre),
-            'isAdded' => $isAdded
+            'genres' => explode(',', $genres->genre)
         ]);
     }
     private function checkValidation($request)
